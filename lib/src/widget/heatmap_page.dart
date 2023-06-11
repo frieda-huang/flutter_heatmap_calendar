@@ -139,26 +139,6 @@ class HeatMapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Column(
-          children: [
-            Row(
-              children: <Widget>[
-                for (var i = 0; i < _heatmapColumnList().length; i++)
-                  Column(
-                    children: [
-                      // Heatmap itself.
-                      Row(
-                        children: <Widget>[..._heatmapColumnList()],
-                      ),
-                    ],
-                  ),
-              ],
-            ),
-          ],
-        ),
-      ],
-    );
+    return _heatmapColumnList().last;
   }
 }
