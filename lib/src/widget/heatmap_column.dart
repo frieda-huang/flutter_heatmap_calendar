@@ -149,8 +149,16 @@ class HeatMapColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[...dayContainers, ...emptySpace],
+    return Row(
+      children: [
+        for (var i = 0; i < 7; i++)
+          Column(
+            children: [
+              Text(DateUtil.WEEK_LABEL[i + 1]),
+              <Widget>[...dayContainers, ...emptySpace][i],
+            ],
+          ),
+      ],
     );
   }
 }

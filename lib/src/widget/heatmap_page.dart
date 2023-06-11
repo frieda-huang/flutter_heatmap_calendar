@@ -1,12 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import './heatmap_month_text.dart';
 import './heatmap_column.dart';
 import '../data/heatmap_color_mode.dart';
 import '../util/datasets_util.dart';
 import '../util/date_util.dart';
-import './heatmap_week_text.dart';
 
 class HeatMapPage extends StatelessWidget {
   /// List value of every sunday's month information.
@@ -143,32 +141,19 @@ class HeatMapPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Row(
-          mainAxisSize: MainAxisSize.min,
+        Column(
           children: [
-            // Show week labels to left side of heatmap.
-            HeatMapWeekText(
-              margin: margin,
-              fontSize: fontSize,
-              size: size,
-              fontColor: textColor,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Show month labels to top of heatmap.
-                HeatMapMonthText(
-                  firstDayInfos: _firstDayInfos,
-                  margin: margin,
-                  fontSize: fontSize,
-                  fontColor: textColor,
-                  size: size,
-                ),
-
-                // Heatmap itself.
-                Row(
-                  children: <Widget>[..._heatmapColumnList()],
-                ),
+            Row(
+              children: <Widget>[
+                for (var i = 0; i < _heatmapColumnList().length; i++)
+                  Column(
+                    children: [
+                      // Heatmap itself.
+                      Row(
+                        children: <Widget>[..._heatmapColumnList()],
+                      ),
+                    ],
+                  ),
               ],
             ),
           ],
