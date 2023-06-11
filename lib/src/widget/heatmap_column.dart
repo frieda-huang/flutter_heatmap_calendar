@@ -73,12 +73,15 @@ class HeatMapColumn extends StatelessWidget {
   // current week.
   final int numDays;
 
+  final bool enableOriginalHeatmapLayout;
+
   HeatMapColumn({
     Key? key,
     required this.startDate,
     required this.endDate,
     required this.colorMode,
     required this.numDays,
+    required this.enableOriginalHeatmapLayout,
     this.size,
     this.fontSize,
     this.defaultColor,
@@ -149,16 +152,22 @@ class HeatMapColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        for (var i = 0; i < 7; i++)
-          Column(
-            children: [
-              Text(DateUtil.WEEK_LABEL[i + 1]),
-              <Widget>[...dayContainers, ...emptySpace][i],
-            ],
-          ),
-      ],
-    );
+    if (enableOriginalHeatmapLayout) {
+      return Column(
+        children: <Widget>[...dayContainers, ...emptySpace],
+      );
+    } else {
+      return Row(
+        children: [
+          for (var i = 0; i < DateUtil.DAYS_IN_WEEK; i++)
+            Column(
+              children: [
+                Text(DateUtil.WEEK_LABEL[i + 1]),
+                <Widget>[...dayContainers, ...emptySpace][i],
+              ],
+            ),
+        ],
+      );
+    }
   }
 }

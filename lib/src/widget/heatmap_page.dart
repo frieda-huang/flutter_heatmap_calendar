@@ -5,6 +5,8 @@ import './heatmap_column.dart';
 import '../data/heatmap_color_mode.dart';
 import '../util/datasets_util.dart';
 import '../util/date_util.dart';
+import 'heatmap_month_text.dart';
+import 'heatmap_week_text.dart';
 
 class HeatMapPage extends StatelessWidget {
   /// List value of every sunday's month information.
@@ -73,11 +75,16 @@ class HeatMapPage extends StatelessWidget {
 
   final bool? showText;
 
+  /// [jyfhuang] Toggle between my custom heatmap layout and the original one
+  /// that puts each week in a separate column
+  final bool enableOriginalHeatmapLayout;
+
   HeatMapPage({
     Key? key,
     required this.colorMode,
     required this.startDate,
     required this.endDate,
+    required this.enableOriginalHeatmapLayout,
     this.size,
     this.fontSize,
     this.datasets,
@@ -128,6 +135,7 @@ class HeatMapPage extends StatelessWidget {
         onClick: onClick,
         datasets: datasets,
         showText: showText,
+        enableOriginalHeatmapLayout: enableOriginalHeatmapLayout,
       ));
 
       // also add first day's month information to _firstDayInfos list.
@@ -139,6 +147,43 @@ class HeatMapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _heatmapColumnList().last;
+    if (enableOriginalHeatmapLayout) {
+      return Column(
+        children: <Widget>[
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Show week labels to left side of heatmap.
+              HeatMapWeekText(
+                margin: margin,
+                fontSize: fontSize,
+                size: size,
+                fontColor: textColor,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Show month labels to top of heatmap.
+                  HeatMapMonthText(
+                    firstDayInfos: _firstDayInfos,
+                    margin: margin,
+                    fontSize: fontSize,
+                    fontColor: textColor,
+                    size: size,
+                  ),
+
+                  // Heatmap itself.
+                  Row(
+                    children: <Widget>[..._heatmapColumnList()],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      );
+    } else {
+      return _heatmapColumnList().last;
+    }
   }
 }

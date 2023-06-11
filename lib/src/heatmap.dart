@@ -87,9 +87,12 @@ class HeatMap extends StatefulWidget {
   /// The double value of [HeatMapColorTip]'s tip container's size.
   final double? colorTipSize;
 
+  final bool enableOriginalHeatmapLayout;
+
   const HeatMap({
     Key? key,
     required this.colorsets,
+    required this.enableOriginalHeatmapLayout,
     this.colorMode = ColorMode.opacity,
     this.startDate,
     this.endDate,
@@ -132,6 +135,7 @@ class _HeatMap extends State<HeatMap> {
       children: <Widget>[
         // Heatmap Widget.
         _scrollableHeatMap(HeatMapPage(
+          enableOriginalHeatmapLayout: widget.enableOriginalHeatmapLayout,
           endDate: widget.endDate ?? DateTime.now(),
           startDate: widget.startDate ??
               DateUtil.oneYearBefore(widget.endDate ?? DateTime.now()),
