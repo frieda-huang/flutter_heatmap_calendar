@@ -3,6 +3,7 @@ import './widget/heatmap_page.dart';
 import './widget/heatmap_color_tip.dart';
 import './data/heatmap_color_mode.dart';
 import './util/date_util.dart';
+import './util/end_date_calculate_util.dart';
 
 class HeatMap extends StatefulWidget {
   /// The Date value of start day of heatmap.
@@ -130,13 +131,17 @@ class _HeatMap extends State<HeatMap> {
 
   @override
   Widget build(BuildContext context) {
+    DateTime todaysDate = DateTime.now();
+    int numOfEmptyBoxes = todaysDate.numOfEmptyBoxes;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         // Heatmap Widget.
         _scrollableHeatMap(HeatMapPage(
           enableOriginalHeatmapLayout: widget.enableOriginalHeatmapLayout,
-          endDate: widget.endDate ?? DateTime.now(),
+          endDate: widget.endDate ??
+              DateTime.now().add(Duration(days: numOfEmptyBoxes)),
           startDate: widget.startDate ??
               DateUtil.oneYearBefore(widget.endDate ?? DateTime.now()),
           colorMode: widget.colorMode,
